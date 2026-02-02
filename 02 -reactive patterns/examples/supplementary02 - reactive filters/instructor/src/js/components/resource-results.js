@@ -8,7 +8,7 @@ template.innerHTML = `
         <span class="badge text-bg-secondary">4</span>
       </div>
 
-      <div class="list-group list-group-flush">
+      <div class="list-group list-group-flush d-flex flex-column flex-fill">
 
         <!-- results will be injected here, by selecting for .list-group and embedding inner HTML -->
 
@@ -115,7 +115,7 @@ class ResourceResults extends HTMLElement {
     if (this.#filteredResults.length) {
       const resultsHTML = this.#filteredResults.map(
         result => `
-        <button type="button" class="list-group-item list-group-item-action" data-id="${result.id}">
+        <button type="button" class="list-group-item list-group-item-action flex-fill" data-id="${result.id}">
           <div class="d-flex w-100 justify-content-between">
             <h2 class="h6 mb-1">${result.title}</h2>
             <small>${result.category}</small>
