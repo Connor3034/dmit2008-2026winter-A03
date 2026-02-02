@@ -24,8 +24,6 @@ class ResourceResults extends HTMLElement {
 
   constructor() {
     super();
-    // WTF is this and why do we need to do it? -> https://dev.to/aman_singh/why-do-we-need-to-bind-methods-inside-our-class-component-s-constructor-45bn
-    // If you read to the end, you'll know we could've just used an arrow function... but this illustrates class vs. instance behavioural differences 
     this._handleResultClick = this._handleResultClick.bind(this);
     this.attachShadow({ mode: 'open' });
   }
@@ -38,35 +36,30 @@ class ResourceResults extends HTMLElement {
   _handleResultClick(event) {
     const button = event.target.closest('button[data-id]');
     if (button) {
-      // snipe for the specific result row that got clicked.
-      // -> this is why we always implement a unique identifier for each element in a series!
       const resultID = button.getAttribute('data-id');
-      const result = this.#results.find(r => r.id === resultID);  // note that we're finding the data object from the array, not the UI row!
+      const result = this.#results.find(r => r.id === resultID);
 
-      // cook up a custom event. docs: https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/
       const resultSelectedEvent = new CustomEvent(
-        'resource-selected',  // *we* get to decide the event name!
+        'resource-selected',
         {
-          detail: { result },  // don't pre-filter the data item. Send the *whole* object; let the receiving component decide what's relevant. 
-          bubbles: true,       // if true, parent node / document can listen for event without knowing about & wiring together sender and receiever components
-          composed: true,      // if true, events can cross shadow DOM boundary
+          detail: { result },
+          bubbles: true,
+          composed: true,
         }
       );
       
-        // broadcast the event to the current target (in this case, a ResourceResults component instance)
         this.dispatchEvent(selectedEvent);
       
     }
   }
 
-  connectedCallback() {  // <- when the component loads/attaches into the DOM...
+  connectedCallback() {
     this.shadowRoot.addEventListener('click', this._handleResultClick);
     
     this.render();
   }
 
-  disconnectedCallback () {  // <- when the component is unloaded/removed from the DOM...
-    // ... then clean up your unused event listeners!
+  disconnectedCallback () {
     this.shadowRoot.removeEventListener('click', this._handleResultClick);
   }
   
