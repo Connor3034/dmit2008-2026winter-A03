@@ -1,5 +1,9 @@
 import Head from "next/head";
 
+// mui components
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+
 export default function Home() {
   return (
     <>
@@ -11,6 +15,12 @@ export default function Home() {
       </Head>
 
       <main>
+        <Container maxWidth="sm">
+          this text is outside a box
+          <Box sx={{ my: 4, border: '1px dashed grey' }}>
+            this text is inside a box
+          </Box>
+        </Container>
 
       </main>
     </>
